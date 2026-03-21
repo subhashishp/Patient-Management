@@ -9,6 +9,9 @@ import com.patientmanagement.patientservice.exception.PatientNotFoundException;
 import com.patientmanagement.patientservice.grpc.BillingServiceGrpcClient;
 import com.patientmanagement.patientservice.kafka.KafkaProducer;
 import com.patientmanagement.patientservice.mapper.PatientMapper;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +20,7 @@ import java.util.List;
 @Service
 public class PatientService {
 
+    private static final Logger log = LoggerFactory.getLogger(PatientService.class);
     private final PatientRepository patientRepository;
     private final BillingServiceGrpcClient billingServiceGrpcClient;
     private final KafkaProducer kafkaProducer;
@@ -39,20 +43,25 @@ public class PatientService {
         return patientResponseDTOs;
     }
 
+    @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         if(patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
                 throw new EmailAlreadyExistsException("A patient with this email already exists" + patientRequestDTO.getEmail());
         }
 
+        log.info("Saving patient details in db for patient {}", patientRequestDTO.getName());
         Patient newPatient = patientRepository.save(
                 PatientMapper.toEntity(patientRequestDTO)
         );
 
+        log.info("Patient details saved to database ID - {}, Name - {}, calling billing service",newPatient.getId(), newPatient.getName());
         billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
                 newPatient.getName(), newPatient.getEmail());
 
+        log.info("Sending event to Kafka for Patient - {}",newPatient.getName());
         kafkaProducer.sentEvent(newPatient);
 
+        log.info("Event produced for patient - {}", newPatient.getName());
         return PatientMapper.toDTO(newPatient);
     }
 
