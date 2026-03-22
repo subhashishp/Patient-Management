@@ -37,6 +37,7 @@ public class KafkaProducer {
             kafkaTemplate.send(topic, objectMapper.writeValueAsString(event));
         } catch (Exception ex) {
             log.error("Error sending PatientCreated event {} - exception {}", event, ex.getMessage(), ex);
+            throw new RuntimeException("Failed to send kafka event");
         }
     }
 }

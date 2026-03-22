@@ -3,6 +3,7 @@ services:
   kafka:
     image: apache/kafka:latest
     container_name: kafka-container
+    hostname: kafka
     ports:
       - "9092:9092"   # internal (container-to-container)
       - "9093:9093"   # external (host machine access)
