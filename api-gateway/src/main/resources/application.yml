@@ -1,52 +1,57 @@
 server:
   port: 4004
-
+  netty:
+    access-log:
+      enabled: true
 #Docker config
-#spring:
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: patient-service-route
-#          uri: http://patient-service:4000
-#          predicates:
-#            - Path=/api/patients/**
-#          filters:
-#            - StripPrefix=1
-#
-#        - id: api-docs-patient-route
-#          uri: http://patient-service:4000
-#          predicates:
-#            - Path=/api-docs/patients
-#          filters:
-#            - RewritePath=/api-docs/patients,/v3/api-docs
-
-
-#local config
 spring:
   cloud:
     gateway:
-      enabled: true
       routes:
         - id: patient-service-route
-          uri: http://localhost:4000
+          uri: http://patient-service:4000
           predicates:
             - Path=/api/patients/**
 
         - id: api-docs-patient-route
-          uri: http://localhost:4000
+          uri: http://patient-service:4000
           predicates:
             - Path=/api-docs/patients
           filters:
             - RewritePath=/api-docs/patients,/v3/api-docs
 
         - id: api-docs-favicon
-          uri: http://localhost:4000
+          uri: http://patient-service:4000
           predicates:
-              - Path=/favicon.ico
+            - Path=/favicon.ico
+
+
+#local config
+#spring:
+#  cloud:
+#    gateway:
+#      enabled: true
+#      routes:
+#        - id: patient-service-route
+#          uri: http://localhost:4000
+#          predicates:
+#            - Path=/api/patients/**
+#
+#        - id: api-docs-patient-route
+#          uri: http://localhost:4000
+#          predicates:
+#            - Path=/api-docs/patients
+#          filters:
+#            - RewritePath=/api-docs/patients,/v3/api-docs
+#
+#        - id: api-docs-favicon
+#          uri: http://localhost:4000
+#          predicates:
+#              - Path=/favicon.ico
 
 logging:
   level:
     root: INFO
-    org.springframework.cloud.gateway: TRACE
-    reactor.netty: DEBUG
+    org.springframework.cloud.gateway: INFO
+    reactor.netty: INFO
     org.springframework.web: DEBUG
