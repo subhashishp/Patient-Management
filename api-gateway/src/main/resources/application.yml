@@ -4,50 +4,58 @@ server:
     access-log:
       enabled: true
 #Docker config
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: patient-service-route
-          uri: http://patient-service:4000
-          predicates:
-            - Path=/api/patients/**
-
-        - id: api-docs-patient-route
-          uri: http://patient-service:4000
-          predicates:
-            - Path=/api-docs/patients
-          filters:
-            - RewritePath=/api-docs/patients,/v3/api-docs
-
-        - id: api-docs-favicon
-          uri: http://patient-service:4000
-          predicates:
-            - Path=/favicon.ico
-
-
-#local config
 #spring:
 #  cloud:
 #    gateway:
-#      enabled: true
 #      routes:
 #        - id: patient-service-route
-#          uri: http://localhost:4000
+#          uri: http://patient-service:4000
 #          predicates:
 #            - Path=/api/patients/**
 #
 #        - id: api-docs-patient-route
-#          uri: http://localhost:4000
+#          uri: http://patient-service:4000
 #          predicates:
 #            - Path=/api-docs/patients
 #          filters:
 #            - RewritePath=/api-docs/patients,/v3/api-docs
 #
 #        - id: api-docs-favicon
-#          uri: http://localhost:4000
+#          uri: http://patient-service:4000
 #          predicates:
-#              - Path=/favicon.ico
+#            - Path=/favicon.ico
+
+
+#local config
+spring:
+  cloud:
+    gateway:
+      enabled: true
+      routes:
+
+        - id: auth-service-route
+          uri: http://localhost:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
+        - id: patient-service-route
+          uri: http://localhost:4000
+          predicates:
+            - Path=/api/patients/**
+
+        - id: api-docs-patient-route
+          uri: http://localhost:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients,/v3/api-docs
+
+        - id: api-docs-favicon
+          uri: http://localhost:4000
+          predicates:
+              - Path=/favicon.ico
 
 logging:
   level:
