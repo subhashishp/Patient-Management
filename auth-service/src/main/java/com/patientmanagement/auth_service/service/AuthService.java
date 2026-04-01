@@ -3,6 +3,7 @@ package com.patientmanagement.auth_service.service;
 import com.patientmanagement.auth_service.dto.LoginRequestDTO;
 import com.patientmanagement.auth_service.entity.User;
 import com.patientmanagement.auth_service.util.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,14 @@ public class AuthService {
                 .map(u -> jwtUtil.generateToken(u.getEmail(),u.getRole()));
 
         return token;
+    }
+
+    public Boolean validateToken(String token) {
+        try {
+            jwtUtil.validateToken(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
