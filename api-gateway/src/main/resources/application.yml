@@ -3,15 +3,29 @@ server:
   netty:
     access-log:
       enabled: true
+
+auth:
+  service:
+    url: http://auth-service:4005
 #Docker config
 spring:
   cloud:
     gateway:
+
       routes:
+        - id: auth-service-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
         - id: patient-service-route
           uri: http://patient-service:4000
           predicates:
             - Path=/api/patients/**
+          filters:
+            - JwtValidation
 
         - id: api-docs-patient-route
           uri: http://patient-service:4000
@@ -20,22 +34,48 @@ spring:
           filters:
             - RewritePath=/api-docs/patients,/v3/api-docs
 
-        - id: api-docs-favicon
+        - id: api-docs-auth-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth,/v3/api-docs
+
+        - id: api-docs-favicon-patient
           uri: http://patient-service:4000
           predicates:
             - Path=/favicon.ico
 
+        - id: api-docs-favicon-auth
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/favicon.ico
 
-#local config
+
+
+#auth:
+#  service:
+#    url: http://localhost:4005
+##local config
 #spring:
 #  cloud:
 #    gateway:
 #      enabled: true
 #      routes:
+#
+#        - id: auth-service-route
+#          uri: http://localhost:4005
+#          predicates:
+#            - Path=/auth/**
+#          filters:
+#            - StripPrefix=1
+#
 #        - id: patient-service-route
 #          uri: http://localhost:4000
 #          predicates:
 #            - Path=/api/patients/**
+#          filters:
+#            - JwtValidation
 #
 #        - id: api-docs-patient-route
 #          uri: http://localhost:4000
@@ -44,10 +84,22 @@ spring:
 #          filters:
 #            - RewritePath=/api-docs/patients,/v3/api-docs
 #
-#        - id: api-docs-favicon
+#        - id: api-docs-auth-route
+#          uri: http://localhost:4005
+#          predicates:
+#            - Path=/api-docs/auth
+#          filters:
+#            - RewritePath=/api-docs/auth,/v3/api-docs
+#
+#        - id: api-docs-favicon-patient
 #          uri: http://localhost:4000
 #          predicates:
 #              - Path=/favicon.ico
+#
+#        - id: api-docs-favicon-auth
+#          uri: http://localhost:4005
+#          predicates:
+#            - Path=/favicon.ico
 
 logging:
   level:
