@@ -2,7 +2,7 @@
 
 <br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=1000&color=2E86AB&center=true&vCenter=true&width=600&lines=Patient+Management+System;Spring+Boot+Microservices;Java%7C+gRPC+%7C+Kafka+%7C+Docker+%7C+SQL" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=1000&color=2E86AB&center=true&vCenter=true&width=600&lines=Patient+Management+System;Spring+Boot+Microservices;Java+%7C+gRPC+%7C+Kafka+%7C+Docker+%7C+SQL" alt="Typing SVG" />
 
 <br/>
 
