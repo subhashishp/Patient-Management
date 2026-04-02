@@ -18,7 +18,7 @@
 [![gRPC](https://img.shields.io/badge/gRPC-Inter--Service-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://grpc.io)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
 [![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
 
 <br/>
 
@@ -37,11 +37,10 @@
 - [gRPC Communication](#-grpc-communication)
 - [Kafka Events](#-kafka-events)
 - [Authentication & Security](#-authentication--security)
-- [Environment Variables](#-environment-variables)
 - [Project Structure](#-project-structure)
 - [Testing](#-testing)
 - [Contributing](#-contributing)
-- [License](#-license)
+
 
 ---
 
